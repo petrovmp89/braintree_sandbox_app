@@ -2,6 +2,9 @@ require 'rubygems'
 require 'braintree'
 require 'sinatra'
 
+set :bind, '0.0.0.0'
+set :port, 9494
+
 Braintree::Configuration.environment = :sandbox
 Braintree::Configuration.merchant_id = ENV["BRAIN_TREE_MERCHANT_ID"]
 Braintree::Configuration.public_key = ENV["BRAIN_TREE_PUBLIC_KEY"]
@@ -21,7 +24,7 @@ post '/checkout' do
   )
 
   if result.success?
-    "success!: #{result.transaction.id}"
+    "success!: #{result.transaction.inspect}"
   elsif result.transaction
     'Error processing transaction:'
     "  code: #{result.transaction.processor_response_code}"
